@@ -1,0 +1,25 @@
+window {
+    background-color: rgba(30, 30, 46, 0.80);
+    border: 1px solid rgba(137, 180, 250, 0.5);
+    border-radius: 12px;
+    font-family: "Inter", sans-serif;
+    font-size: 14px;
+}
+#outer-box { margin: 6px; background: transparent; }
+#input {
+    min-height: 0;
+    margin: 0;
+    padding: 0;
+    border: none;
+    opacity: 0;
+}
+#inner-box, #scroll { background: transparent; }
+#entry {
+    padding: 8px 12px;
+    margin: 2px;
+    border-radius: 8px;
+    color: #cdd6f4;
+}
+#entry:selected { background-color: #89b4fa; }
+#entry:selected * { color: #1e1e2e; }
+#text { color: inherit; }

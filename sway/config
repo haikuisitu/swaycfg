@@ -1,0 +1,60 @@
+### Переменные
+set $mod Mod4
+set $bg /home/haiku/Загрузки/macos-mojave-starry-5120x2880-24090.jpg
+
+### Обои
+output * bg $bg fill
+
+### Раскладка клавиатуры (Alt+Shift)
+input "type:keyboard" {
+    xkb_layout us,ru
+    xkb_options grp:alt_shift_toggle
+}
+
+### Клавиши (--to-code = работают на любой раскладке)
+bindsym --to-code {
+    $mod+1 workspace 1
+    $mod+2 workspace 2
+    $mod+3 workspace 3
+    $mod+4 workspace 4
+    $mod+5 workspace 5
+    $mod+6 workspace 6
+    $mod+7 workspace 7
+    $mod+8 workspace 8
+    $mod+9 workspace 9
+
+    # Терминал
+    $mod+q exec foot
+    # Закрыть окно
+    $mod+c kill
+    # Меню приложений
+    $mod+space exec wofi --show drun
+    # Локскрин
+    $mod+l exec swaylock -f -i "$bg" -c 000000
+    # Перезагрузка конфига / выход
+    $mod+Shift+r reload
+    $mod+Shift+e exec swaynag -t warning -m 'Выйти из Sway?' -B 'Да' 'swaymsg exit'
+}
+
+# Скриншот области в буфер (Super+Shift+S)
+bindsym --release --to-code $mod+Shift+s exec 'grim -g "$(slurp)" - | wl-copy'
+
+# Яркость и громкость (Fn-клавиши)
+bindsym --locked XF86MonBrightnessUp exec brightnessctl set 5%+
+bindsym --locked XF86MonBrightnessDown exec brightnessctl set 5%-
+bindsym --locked XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +5%
+bindsym --locked XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -5%
+bindsym --locked XF86AudioMute exec pactl set-sink-mute @DEFAULT_SINK@ toggle
+
+### Плавающие окна: Super + ЛКМ двигать, Super + ПКМ менять размер
+floating_modifier $mod normal
+
+### Автозапуск
+exec waybar >/dev/null 2>&1
+exec mako
+exec /usr/libexec/polkit-mate-authentication-agent-1
+exec swayidle -w \
+    timeout 300 'swaylock -f -i "$bg" -c 000000' \
+    timeout 600 'swaymsg "output * dpms off"' \
+    resume 'swaymsg "output * dpms on"' \
+    before-sleep 'swaylock -f -i "$bg" -c 000000'
